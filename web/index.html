@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="从一篇种子论文出发，自动解读、发现相关工作并生成研究脉络。">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23172c4b'/%3E%3Cpath d='M14 21 32 13l18 8v22l-18 8-18-8zM23 28l9-4 9 4-9 4zm0 10 9 4 9-4' fill='none' stroke='white' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <title>PaperScope · 文献研究助手</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="ambient ambient-a" aria-hidden="true"></div>
+  <div class="ambient ambient-b" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="PaperScope 首页">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 44 44"><path d="M8 11.5 22 5l14 6.5v19L22 37 8 30.5z"/><path d="m15 17 7-3.2 7 3.2-7 3.2zM15 24l7 3.2 7-3.2"/></svg>
+      </span>
+      <span><strong>PaperScope</strong><small>文献研究助手</small></span>
+    </a>
+    <div class="topbar-actions">
+      <span class="status-pill status-demo" id="mode-status"><i></i>演示模式</span>
+      <button class="ghost-button" id="open-api" type="button">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15.5A3.5 3.5 0 1 0 12 8a3.5 3.5 0 0 0 0 7.5Z"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-2.83 2.83-.06-.06a1.7 1.7 0 0 0-1.88-.34 1.7 1.7 0 0 0-1.03 1.55V21h-4v-.08A1.7 1.7 0 0 0 8.96 19.4a1.7 1.7 0 0 0-1.88.34l-.06.06-2.83-2.83.06-.06A1.7 1.7 0 0 0 4.6 15 1.7 1.7 0 0 0 3.08 14H3v-4h.08A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.34-1.88l-.06-.06 2.83-2.83.06.06A1.7 1.7 0 0 0 8.96 4.6 1.7 1.7 0 0 0 10 3.08V3h4v.08A1.7 1.7 0 0 0 15.04 4.6a1.7 1.7 0 0 0 1.88-.34l.06-.06 2.83 2.83-.06.06A1.7 1.7 0 0 0 19.4 9 1.7 1.7 0 0 0 20.92 10H21v4h-.08A1.7 1.7 0 0 0 19.4 15Z"/></svg>
+        API 配置
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section class="command-section" aria-labelledby="command-title">
+      <div class="command-copy">
+        <span class="eyebrow">FROM ONE PAPER TO A RESEARCH LANDSCAPE</span>
+        <h1 id="command-title">从一篇论文，展开它的研究世界。</h1>
+        <p>输入标题、DOI、arXiv 编号或链接。PaperScope 将解读种子论文、主动发现相关工作，并整理成可追踪的时间线与关系网络。</p>
+      </div>
+      <form class="research-form" id="research-form">
+        <label for="paper-query">种子论文</label>
+        <div class="query-row">
+          <div class="query-input-wrap">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+            <input id="paper-query" name="query" value="EchoSight: Advancing Visual-Language Models with Wiki Knowledge" placeholder="例如：论文标题、10.xxxx/doi、arXiv:2403.xxxxx 或 URL" autocomplete="off">
+          </div>
+          <button class="primary-button" id="run-research" type="submit">
+            <span>启动研究</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M14 7l5 5-5 5"/></svg>
+          </button>
+        </div>
+        <div class="research-options">
+          <label class="depth-control" for="analysis-depth"><span>分析深度</span><select id="analysis-depth"><option value="standard">标准泛读 · 摘要与元数据</option><option value="deep">深度解读 · 全文材料优先</option></select></label>
+          <details class="material-panel" id="material-panel">
+            <summary><span>＋ 添加论文全文或重点摘录</span><small>可显著提升方法与实验解读</small></summary>
+            <div class="material-body">
+              <div class="material-head"><div><strong>补充研究材料</strong><p>建议提供摘要、引言、方法、实验和局限章节；可读取本地 PDF、TXT 或 Markdown。材料仅用于本次请求。</p></div><label class="file-button">读取论文文件<input id="source-file" type="file" accept=".pdf,.txt,.md,application/pdf,text/plain,text/markdown"></label></div>
+              <textarea id="source-material" maxlength="80000" placeholder="在此粘贴论文全文，或至少粘贴方法与实验章节……"></textarea>
+              <div class="material-foot"><span id="material-count">0 / 80,000 字符</span><button id="clear-material" type="button">清空材料</button></div>
+            </div>
+          </details>
+        </div>
+        <div class="form-foot">
+          <div class="examples" aria-label="示例输入">
+            <span>试试：</span>
+            <button type="button" data-example="EchoSight: Advancing Visual-Language Models with Wiki Knowledge">EchoSight</button>
+            <button type="button" data-example="10.18653/v1/2024.findings-emnlp.83">DOI</button>
+            <button type="button" data-example="https://aclanthology.org/2024.findings-emnlp.83/">论文链接</button>
+          </div>
+          <span class="privacy-note"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>API 密钥仅保留在本地后端进程内存</span>
+        </div>
+      </form>
+    </section>
+
+    <section class="app-shell">
+      <aside class="workflow-panel" aria-labelledby="workflow-title">
+        <div class="panel-heading">
+          <div><span class="section-index">01</span><h2 id="workflow-title">研究流程</h2></div>
+          <span class="mini-badge" id="workflow-count">6 阶段</span>
+        </div>
+        <ol class="workflow-list" id="workflow-list"></ol>
+        <div class="workflow-note">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 3.5 7v5c0 5.2 3.6 8.1 8.5 9 4.9-.9 8.5-3.8 8.5-9V7z"/><path d="m8.5 12 2.2 2.2 4.8-5"/></svg>
+          <div><strong>可追踪优先</strong><p>每个结论保留来源、证据类型与置信度。</p></div>
+        </div>
+      </aside>
+
+      <div class="workspace">
+        <div class="workspace-head">
+          <nav class="view-tabs" aria-label="报告视图">
+            <button class="active" type="button" data-view="overview">论文解读</button>
+            <button type="button" data-view="network">关系网络</button>
+            <button type="button" data-view="timeline">时间线</button>
+            <button type="button" data-view="synthesis">综合洞察</button>
+            <button type="button" data-view="sources">来源记录</button>
+          </nav>
+          <div class="export-menu">
+            <button class="icon-button" id="export-json" type="button" title="导出 JSON"><span>JSON</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 19h14"/></svg></button>
+            <button class="icon-button" id="export-md" type="button" title="导出 Markdown"><span>MD</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 19h14"/></svg></button>
+          </div>
+        </div>
+
+        <div class="demo-banner" id="demo-banner" role="status">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5m0-8h.01"/></svg>
+          <span id="demo-notice">当前为演示模式。</span>
+        </div>
+
+        <section class="report-view active" id="view-overview" data-panel="overview">
+          <div class="paper-hero skeleton-zone" id="paper-hero"></div>
+          <div class="metrics-strip" id="report-metrics"></div>
+          <div class="content-grid two-thirds">
+            <article class="report-card accent-card">
+              <div class="card-heading"><span class="section-index">02</span><h3>研究问题</h3></div>
+              <p class="lead-copy" id="paper-problem"></p>
+            </article>
+            <article class="report-card">
+              <div class="card-heading"><span class="section-index">03</span><h3>核心贡献</h3></div>
+              <ol class="number-list" id="paper-contributions"></ol>
+            </article>
+          </div>
+          <article class="report-card method-card">
+            <div class="card-heading with-copy"><div><span class="section-index">04</span><h3>方法流程</h3></div><p>从输入到回答的关键路径</p></div>
+            <div class="method-flow" id="method-flow"></div>
+          </article>
+          <article class="report-card deep-dive-card" id="deep-dive-card">
+            <div class="card-heading with-copy"><div><span class="section-index">05</span><h3>技术细读</h3></div><p id="material-scope">基于当前可用材料</p></div>
+            <div class="concept-grid" id="key-concepts"></div>
+            <div class="deep-dive-grid">
+              <section><h4>机制与实现</h4><ul id="technical-details"></ul></section>
+              <section><h4>实验设置</h4><ul id="experimental-setup"></ul></section>
+              <section><h4>主要发现</h4><ul id="detailed-findings"></ul></section>
+              <section><h4>精读指南</h4><ol id="reading-guide"></ol></section>
+            </div>
+          </article>
+          <div class="content-grid halves">
+            <article class="report-card">
+              <div class="card-heading"><span class="section-index">06</span><h3>实验依据</h3></div>
+              <ul class="check-list" id="paper-evidence"></ul>
+            </article>
+            <article class="report-card warning-card">
+              <div class="card-heading"><span class="section-index">07</span><h3>局限与待验证</h3></div>
+              <ul class="dash-list" id="paper-limitations"></ul>
+            </article>
+          </div>
+          <article class="report-card related-card">
+            <div class="card-heading with-copy">
+              <div><span class="section-index">08</span><h3>相关工作详解</h3></div>
+              <label class="small-search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input id="related-search" placeholder="筛选相关工作"></label>
+            </div>
+            <div class="related-grid" id="related-grid"></div>
+          </article>
+        </section>
+
+        <section class="report-view" id="view-network" data-panel="network">
+          <article class="report-card graph-card">
+            <div class="card-heading with-copy">
+              <div><span class="section-index">02</span><h3>论文关系网络</h3></div>
+              <div class="graph-tools">
+                <label>显示<select id="relation-filter"><option value="all">全部关系</option><option value="earlier">前驱工作</option><option value="later">后续工作</option></select></label>
+                <button class="small-button" id="reset-graph" type="button">复位视图</button>
+              </div>
+            </div>
+            <div class="graph-legend"><span><i class="legend-seed"></i>种子论文</span><span><i class="legend-foundation"></i>前驱/基础</span><span><i class="legend-follow"></i>后续/扩展</span><span><i class="legend-contrast"></i>对照路线</span></div>
+            <div class="graph-layout">
+              <div class="graph-canvas" id="graph-canvas"></div>
+              <aside class="node-detail" id="node-detail"><span class="empty-kicker">选择节点</span><h4>点击论文查看关系说明</h4><p>网络中的连线表示方法演进、任务基础或编者对照，不自动等同于引用关系。</p></aside>
+            </div>
+          </article>
+        </section>
+
+        <section class="report-view" id="view-timeline" data-panel="timeline">
+          <article class="report-card">
+            <div class="card-heading with-copy"><div><span class="section-index">02</span><h3>相关工作时间线</h3></div><p>按发表年份观察问题如何递进</p></div>
+            <div class="timeline" id="timeline"></div>
+          </article>
+        </section>
+
+        <section class="report-view" id="view-synthesis" data-panel="synthesis">
+          <article class="thesis-card">
+            <span class="eyebrow">SYNTHESIS</span>
+            <blockquote id="synthesis-thesis"></blockquote>
+          </article>
+          <article class="report-card comparison-card">
+            <div class="card-heading with-copy"><div><span class="section-index">02</span><h3>相关工作对比矩阵</h3></div><p>同一视角比较任务关系、核心内容与证据边界</p></div>
+            <div class="comparison-wrap"><table class="comparison-table"><thead><tr><th>论文</th><th>年份</th><th>关系</th><th>核心内容</th><th>与种子论文的差异</th><th>证据边界</th></tr></thead><tbody id="comparison-matrix"></tbody></table></div>
+          </article>
+          <div class="cluster-grid" id="cluster-grid"></div>
+          <div class="content-grid halves">
+            <article class="report-card gap-card">
+              <div class="card-heading"><span class="section-index">03</span><h3>值得继续追踪的空白</h3></div>
+              <ol class="gap-list" id="gap-list"></ol>
+            </article>
+            <article class="report-card">
+              <div class="card-heading"><span class="section-index">04</span><h3>建议阅读顺序</h3></div>
+              <div class="reading-path" id="reading-path"></div>
+            </article>
+          </div>
+          <article class="report-card">
+            <div class="card-heading"><span class="section-index">05</span><h3>系统主动使用的检索策略</h3></div>
+            <div class="strategy-columns" id="search-strategy"></div>
+          </article>
+        </section>
+
+        <section class="report-view" id="view-sources" data-panel="sources">
+          <article class="report-card audit-card">
+            <div class="card-heading with-copy"><div><span class="section-index">02</span><h3>模型调用凭证</h3></div><span class="audit-status" id="model-audit-status">等待报告</span></div>
+            <div class="model-audit" id="model-audit"></div>
+            <p class="audit-note">凭证直接取自模型服务响应，仅用于确认真实调用与 token 用量；不会记录或显示 API Key。</p>
+          </article>
+          <article class="report-card data-audit-card">
+            <div class="card-heading with-copy"><div><span class="section-index">03</span><h3>OpenAlex 数据额度</h3></div><span class="audit-status" id="data-audit-status">等待报告</span></div>
+            <div class="model-audit" id="data-audit"></div>
+            <p class="audit-note">额度信息来自 OpenAlex 响应头或 rate-limit 接口；缓存命中不会消耗新的请求额度。</p>
+          </article>
+          <article class="report-card source-record-card">
+            <div class="card-heading with-copy"><div><span class="section-index">04</span><h3>来源与判断记录</h3></div><p>事实、来源和模型分析分开保存</p></div>
+            <div class="provenance-table" id="provenance"></div>
+          </article>
+          <article class="report-card schema-card">
+            <div class="card-heading"><span class="section-index">05</span><h3>正式接入后的证据原则</h3></div>
+            <div class="principles">
+              <div><strong>原始来源优先</strong><p>论文主页、DOI、出版社或作者页面优先于二手聚合。</p></div>
+              <div><strong>关系不冒充引用</strong><p>明确区分真实引用、语义相关、方法对照与模型推断。</p></div>
+              <div><strong>结论附置信度</strong><p>来源充分性、版本一致性和模型判断分别记录。</p></div>
+              <div><strong>允许人工确认</strong><p>在最终汇总前保留候选删除、补充和关系修订入口。</p></div>
+            </div>
+          </article>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <dialog class="api-dialog fulltext-dialog" id="fulltext-dialog">
+    <form method="dialog" class="dialog-head"><div><span class="eyebrow">DEEP RESEARCH</span><h2>详细模式需要更完整的材料</h2></div><button class="dialog-close" value="cancel" aria-label="关闭">×</button></form>
+    <p class="dialog-intro">当前没有上传 PDF 或粘贴正文。PaperScope 可以使用 OpenAlex 返回的开放获取链接查找 PDF；只读取公开 HTTPS 来源，会校验文件类型与论文身份，且不写入磁盘。</p>
+    <div class="fulltext-choice-grid">
+      <div><strong>查找开放全文</strong><p>若找到可验证的 PDF，将自动提取正文后启动研究。</p></div>
+      <div><strong>仅使用公开摘要</strong><p>速度更快，但方法细节、实验数字和局限会更保守。</p></div>
+    </div>
+    <form method="dialog" class="fulltext-actions">
+      <button class="small-button" value="cancel">取消</button>
+      <button class="small-button" value="summary">继续使用摘要</button>
+      <button class="config-activate" value="find">查找开放全文</button>
+    </form>
+  </dialog>
+
+  <dialog class="api-dialog fulltext-dialog" id="fulltext-fallback-dialog">
+    <form method="dialog" class="dialog-head"><div><span class="eyebrow">MATERIAL FALLBACK</span><h2>未能获取可验证的开放全文</h2></div><button class="dialog-close" value="cancel" aria-label="关闭">×</button></form>
+    <div class="fulltext-failure-reason" id="fulltext-fallback-reason"></div>
+    <p class="dialog-intro">你可以停止本次研究，或明确同意改用 OpenAlex 公开摘要。如果继续，报告将标记为“详细模式材料降级”，不会冒充全文分析。</p>
+    <form method="dialog" class="fulltext-actions">
+      <button class="small-button" value="cancel">停止研究</button>
+      <button class="config-activate" value="summary">同意使用摘要继续</button>
+    </form>
+  </dialog>
+
+  <dialog class="api-dialog" id="api-dialog">
+    <form method="dialog" class="dialog-head"><div><span class="eyebrow">LOCAL RUNTIME</span><h2>API 配置</h2></div><button class="dialog-close" value="cancel" aria-label="关闭">×</button></form>
+    <p class="dialog-intro">在这里连接模型与 OpenAlex。密钥只提交到本机 PaperScope 后端并保存在当前进程内存中，不写入文件或浏览器存储；关闭服务后自动清除。</p>
+    <form class="llm-config-form" id="llm-config-form">
+      <label class="config-field"><span>供应商</span><select id="llm-provider" name="provider"></select></label>
+      <div class="config-field-row">
+        <label class="config-field"><span>Base URL</span><input id="llm-base-url" name="baseUrl" type="url" placeholder="https://api.example.com/v1" autocomplete="off"></label>
+        <label class="config-field"><span>模型名称</span><input id="llm-model" name="model" placeholder="例如 glm-4.7-flash" autocomplete="off"></label>
+      </div>
+      <label class="config-field"><span>API Key</span><input id="llm-api-key" name="apiKey" type="password" placeholder="仅用于本次本地运行" autocomplete="new-password" spellcheck="false"></label>
+      <div class="config-security"><span>内存配置</span><p>激活前会进行一次真实连接测试；成功后页面不会回显密钥。</p></div>
+      <button class="config-activate" id="activate-llm" type="submit">测试并激活</button>
+    </form>
+    <form class="openalex-config-form" id="openalex-config-form">
+      <div class="data-config-head"><div><span class="integration-icon">OA</span><div><strong>OpenAlex 免费 API Key</strong><p>免费账户每天 $1 预算，约为匿名模式的 10 倍；论文检索和引用网络共用同一个 Key。</p></div></div><span class="config-state" id="openalex-key-state">匿名模式</span></div>
+      <div class="data-key-row"><label class="config-field"><span>OpenAlex API Key</span><input id="openalex-api-key" name="apiKey" type="password" placeholder="仅保留在本次本地进程内存" autocomplete="new-password" spellcheck="false"></label><button class="config-activate" id="activate-openalex" type="submit">测试并激活</button></div>
+      <div class="data-quota" id="openalex-quota">尚未读取个人额度；匿名模式仍可继续使用。</div>
+      <button class="text-danger-button" id="deactivate-openalex" type="button" disabled>停用 Key，恢复匿名模式</button>
+    </form>
+    <div class="integration-list" id="integration-list"></div>
+    <div class="stage-cache-config">
+      <div><strong>模型阶段缓存</strong><p>只保存通过结构校验的阶段结果，不保存 API Key、原始提示词或论文材料；更换模型、材料或提示词后自动失效。</p><span id="stage-cache-status">正在读取缓存状态…</span></div>
+      <button class="small-button danger-button" id="clear-stage-cache" type="button" disabled>清除缓存</button>
+    </div>
+    <div class="config-actions"><button class="small-button" id="test-data" type="button">测试免费论文数据源</button><button class="small-button test-llm-button" id="test-llm" type="button">模型尚未配置</button><button class="small-button danger-button" id="deactivate-llm" type="button" disabled>停用模型</button></div>
+    <p class="dialog-foot">不配置 OpenAlex Key 时仍可使用匿名免费额度；配置免费 Key 后可获得更高的每日预算和速率上限。Crossref 仅在 DOI 元数据缺失时自动回退。智谱只是当前模型测试预设，其他兼容 Chat Completions 的接口也可切换。</p>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="/app.js" defer></script>
+</body>
+</html>
+

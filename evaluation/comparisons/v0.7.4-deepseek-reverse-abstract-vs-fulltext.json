@@ -1,0 +1,92 @@
+{
+  "benchmarkId": "reasc",
+  "before": 80.71,
+  "after": 100.0,
+  "delta": 19.29,
+  "categories": {
+    "anchors": {
+      "before": 20.83,
+      "after": 25.0,
+      "delta": 4.17
+    },
+    "depth": {
+      "before": 8.0,
+      "after": 20.0,
+      "delta": 12.0
+    },
+    "metadata": {
+      "before": 10.0,
+      "after": 10.0,
+      "delta": 0.0
+    },
+    "related": {
+      "before": 15.0,
+      "after": 15.0,
+      "delta": 0.0
+    },
+    "structure": {
+      "before": 21.88,
+      "after": 25.0,
+      "delta": 3.12
+    },
+    "traceability": {
+      "before": 5.0,
+      "after": 5.0,
+      "delta": 0.0
+    }
+  },
+  "runtime": {
+    "before": {
+      "provider": "deepseek",
+      "model": "deepseek-flash",
+      "analysisDepth": "deep",
+      "materialScope": "OpenAlex 公开摘要（详细模式材料降级）",
+      "usage": {
+        "prompt_tokens": 9966,
+        "completion_tokens": 3893,
+        "total_tokens": 13859,
+        "prompt_cache_hit_tokens": 1152,
+        "prompt_cache_miss_tokens": 8814
+      },
+      "modelCallCount": 3,
+      "stageCount": 3,
+      "validationRetries": 0,
+      "schemaFallbackCount": 0,
+      "schemaFallbacks": [],
+      "elapsedSeconds": 27.212,
+      "serverElapsedSeconds": 27.207,
+      "modelElapsedSeconds": 27.193,
+      "openAlexCacheHits": 3,
+      "openAlexCacheMisses": 0,
+      "benchmarkSequence": 2,
+      "materialPreparationSeconds": 0.0,
+      "researchRequestSeconds": 27.212
+    },
+    "after": {
+      "provider": "deepseek",
+      "model": "deepseek-flash",
+      "analysisDepth": "deep",
+      "materialScope": "OpenAlex 开放 PDF（publishedVersion）",
+      "usage": {
+        "prompt_tokens": 39569,
+        "completion_tokens": 6186,
+        "total_tokens": 45755,
+        "prompt_cache_hit_tokens": 17536,
+        "prompt_cache_miss_tokens": 22033
+      },
+      "modelCallCount": 5,
+      "stageCount": 4,
+      "validationRetries": 1,
+      "schemaFallbackCount": 0,
+      "schemaFallbacks": [],
+      "elapsedSeconds": 68.596,
+      "serverElapsedSeconds": 45.134,
+      "modelElapsedSeconds": 41.923,
+      "openAlexCacheHits": 1,
+      "openAlexCacheMisses": 2,
+      "benchmarkSequence": 1,
+      "materialPreparationSeconds": 23.455,
+      "researchRequestSeconds": 45.14
+    }
+  }
+}

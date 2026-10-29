@@ -1,0 +1,85 @@
+{
+  "benchmarkId": "reasc",
+  "before": 77.58,
+  "after": 96.88,
+  "delta": 19.3,
+  "categories": {
+    "anchors": {
+      "before": 20.83,
+      "after": 25.0,
+      "delta": 4.17
+    },
+    "depth": {
+      "before": 8.0,
+      "after": 20.0,
+      "delta": 12.0
+    },
+    "metadata": {
+      "before": 10.0,
+      "after": 10.0,
+      "delta": 0.0
+    },
+    "related": {
+      "before": 15.0,
+      "after": 15.0,
+      "delta": 0.0
+    },
+    "structure": {
+      "before": 18.75,
+      "after": 21.88,
+      "delta": 3.13
+    },
+    "traceability": {
+      "before": 5.0,
+      "after": 5.0,
+      "delta": 0.0
+    }
+  },
+  "runtime": {
+    "before": {
+      "provider": "deepseek",
+      "model": "deepseek-flash",
+      "analysisDepth": "deep",
+      "materialScope": "OpenAlex 公开摘要（详细模式材料降级）",
+      "usage": {
+        "prompt_tokens": 9742,
+        "completion_tokens": 3689,
+        "total_tokens": 13431,
+        "prompt_cache_miss_tokens": 9742
+      },
+      "modelCallCount": 3,
+      "stageCount": 3,
+      "validationRetries": 0,
+      "schemaFallbackCount": 0,
+      "schemaFallbacks": [],
+      "elapsedSeconds": 29.353,
+      "serverElapsedSeconds": 29.32,
+      "modelElapsedSeconds": 24.96,
+      "materialPreparationSeconds": 0.0,
+      "researchRequestSeconds": 29.353
+    },
+    "after": {
+      "provider": "deepseek",
+      "model": "deepseek-flash",
+      "analysisDepth": "deep",
+      "materialScope": "OpenAlex 开放 PDF（publishedVersion）",
+      "usage": {
+        "prompt_tokens": 31580,
+        "completion_tokens": 5675,
+        "total_tokens": 37255,
+        "prompt_cache_hit_tokens": 1280,
+        "prompt_cache_miss_tokens": 30300
+      },
+      "modelCallCount": 4,
+      "stageCount": 4,
+      "validationRetries": 0,
+      "schemaFallbackCount": 0,
+      "schemaFallbacks": [],
+      "elapsedSeconds": 64.355,
+      "serverElapsedSeconds": 36.377,
+      "modelElapsedSeconds": 36.332,
+      "materialPreparationSeconds": 27.971,
+      "researchRequestSeconds": 36.384
+    }
+  }
+}

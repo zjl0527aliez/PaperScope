@@ -1,0 +1,45 @@
+{
+  "id": "reasc",
+  "name": "ReASC 盲测基准",
+  "query": "10.18653/v1/2026.findings-acl.1085",
+  "title": "Reliability-Aware Adaptive Self-Consistency for Efficient Sampling in LLM Reasoning",
+  "doi": "10.18653/v1/2026.findings-acl.1085",
+  "arxiv": "2601.02970",
+  "officialUrl": "https://aclanthology.org/2026.findings-acl.1085/",
+  "pdfUrl": "https://aclanthology.org/2026.findings-acl.1085.pdf",
+  "depth": "deep",
+  "evaluatorVersion": "1.0.2",
+  "goldAnchors": [
+    {
+      "id": "problem",
+      "label": "指出固定或计数式自洽采样的成本与等权响应问题",
+      "patterns": ["count-based|计数", "sampling|采样", "equal|等同|等权|同等"]
+    },
+    {
+      "id": "core_method",
+      "label": "说明 ReASC 以响应可靠性或置信度进行证据累积",
+      "patterns": ["ReASC|可靠性感知", "reliability|可靠性|confidence|置信度", "evidence|证据"]
+    },
+    {
+      "id": "two_stages",
+      "label": "覆盖单样本决策与可靠性感知累积两个阶段",
+      "patterns": ["single[- ]sample|单样本", "accumulation|累积|聚合"]
+    },
+    {
+      "id": "confidence_signal",
+      "label": "识别 Bottom 10% Group Confidence / self-certainty 信号",
+      "patterns": ["Bottom 10%|最低.*10%|底部.*10%", "self-certainty|自确定|自我确信|自信度"]
+    },
+    {
+      "id": "evaluation_scope",
+      "label": "覆盖五个模型、四个数据集的评测范围",
+      "patterns": ["five models|5个模型|五个模型", "four datasets|4个数据集|四个数据集"]
+    },
+    {
+      "id": "headline_result",
+      "label": "准确报告 GSM8K / Gemma-3-4B-it 上最高约 70% 成本下降",
+      "patterns": ["70%|70％", "GSM8K", "Gemma[- ]?3[- ]?4B"]
+    }
+  ],
+  "notes": "2026-10-28 首次引入，未参与此前 PaperScope 的开发与人工调参。答案锚点来自 ACL Anthology 正式页面和论文 PDF，仅在报告生成后评分。"
+}
